@@ -1,28 +1,29 @@
 package com.microservices.department.service.controller;
 
-import com.microservices.department.service.models.Department;
+import com.microservices.department.service.model.Department;
 import com.microservices.department.service.service.DepartmentService;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/department")
+@Slf4j
 public class DepartmentController {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(DepartmentController.class);
-
     @Autowired
-    DepartmentService departmentService;
+    private DepartmentService departmentService;
+
 
     @PostMapping
-    public Department addDepartment(@RequestBody Department department){
-        LOGGER.info("Department Add : {}", department);
+    public String addDepartment(@RequestBody Department department){
         departmentService.addDepartment(department);
+        return "Success";
+    }
+
+    @GetMapping("/{name}")
+    public Department getDepartmentByName(@PathVariable("name") String name){
+        Department department = departmentService.getDepartmentByName(name);
         return department;
     }
 }
